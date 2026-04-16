@@ -113,6 +113,16 @@ export default function App() {
     setPendingChatId(null);
   };
 
+  const handleDeleteChat = (chatId: string) => {
+    const updatedChats = chats.filter(c => c.id !== chatId);
+    setChats(updatedChats);
+    saveChatsLocally(updatedChats);
+
+    if (selectedChatId === chatId) {
+      setSelectedChatId(updatedChats.length > 0 ? updatedChats[0].id : null);
+    }
+  };
+
   if (!currentUser) {
     return <Login onLogin={handleLogin} />;
   }
@@ -140,6 +150,7 @@ export default function App() {
             onLogout={handleLogout}
             username={currentUser}
             onChatsLoaded={handleChatsLoaded}
+            onDeleteChat={handleDeleteChat}
           />
           {selectedChat ? (
             <ChatView chat={selectedChat} />

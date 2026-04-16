@@ -3,7 +3,7 @@ import type { Chat, ChatMessage } from '../types';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
-import { MessageSquare, LogOut, Plus, Loader2 } from 'lucide-react';
+import { MessageSquare, LogOut, Plus, Loader2, Trash2 } from 'lucide-react';
 import { useDropzone } from 'react-dropzone';
 import * as whatsappChatParser from 'whatsapp-chat-parser';
 
@@ -14,9 +14,10 @@ interface SidebarProps {
   onLogout?: () => void;
   username?: string | null;
   onChatsLoaded?: (chats: Chat[]) => void;
+  onDeleteChat?: (id: string) => void;
 }
 
-export function ChatSidebar({ chats, selectedChatId, onSelectChat, onLogout, username, onChatsLoaded }: SidebarProps) {
+export function ChatSidebar({ chats, selectedChatId, onSelectChat, onLogout, username, onChatsLoaded, onDeleteChat }: SidebarProps) {
   const [loading, setLoading] = useState(false);
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
@@ -129,7 +130,7 @@ export function ChatSidebar({ chats, selectedChatId, onSelectChat, onLogout, use
               key={chat.id}
               onClick={() => onSelectChat(chat.id)}
               className={cn(
-                "flex items-center gap-4 p-3 cursor-pointer hover:bg-whatsapp-bg transition-colors border-b border-whatsapp-border/50",
+                "group relative flex items-center gap-4 p-3 cursor-pointer hover:bg-whatsapp-bg transition-colors border-b border-whatsapp-border/50 overflow-hidden",
                 selectedChatId === chat.id && "bg-whatsapp-bg"
               )}
             >
@@ -153,6 +154,15 @@ export function ChatSidebar({ chats, selectedChatId, onSelectChat, onLogout, use
                   </p>
                 )}
               </div>
+              {onDeleteChat && (
+                <button 
+                  onClick={(e) => { e.stopPropagation(); onDeleteChat(chat.id); }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-whatsapp-bg hover:bg-destructive hover:text-white text-whatsapp-muted rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-sm"
+                  title="Delete Chat"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              )}
             </div>
           ))
         )}
