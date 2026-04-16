@@ -157,7 +157,7 @@ export function ChatSidebar({ chats, selectedChatId, onSelectChat, onLogout, use
               {onDeleteChat && (
                 <button 
                   onClick={(e) => { e.stopPropagation(); onDeleteChat(chat.id); }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-whatsapp-bg hover:bg-destructive hover:text-white text-whatsapp-muted rounded-full opacity-0 group-hover:opacity-100 transition-all shadow-sm"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-whatsapp-bg hover:bg-destructive hover:text-white text-whatsapp-muted rounded-full transition-all shadow-sm"
                   title="Delete Chat"
                 >
                   <Trash2 className="w-4 h-4" />
